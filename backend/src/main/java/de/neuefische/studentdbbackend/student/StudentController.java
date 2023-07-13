@@ -37,6 +37,38 @@ public class StudentController {
         return studentService.getAllStudents();
     }
 
+    @GetMapping("2")
+    public List<StudentResponseDto> getAllStudents2(
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String courseOfStudies
+    ) {
+        if (firstName != null) {
+            return studentService.getStudentsByFirstName(firstName);
+        } else if (lastName != null) {
+            return studentService.getStudentsByLastName(lastName);
+        } else if (courseOfStudies != null) {
+            return studentService.getStudentsByCourse(courseOfStudies);
+        }
+        return studentService.getAllStudents();
+    }
+//
+//    @GetMapping("3")
+//    public List<StudentResponseDto> getAllStudents3(
+//            @RequestParam(required = false) String firstName,
+//            @RequestParam(required = false) String lastName,
+//            @RequestParam(required = false) String courseOfStudies
+//    ) {
+//        if (firstName != null) {
+//            return studentService.getStudentsByFirstName(firstName);
+//        } else if (lastName != null) {
+//            return studentService.getStudentsByLastName(lastName);
+//        } else if (courseOfStudies != null) {
+//            return studentService.getStudentsByCourse(courseOfStudies);
+//        }
+//        return studentService.getAllStudents();
+//    }
+
     @GetMapping("/search")
     public StudentResponseDto searchStudent(
             @RequestParam String firstName,
@@ -69,7 +101,13 @@ public class StudentController {
 
     @ExceptionHandler(StudentNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleStudentNotFoundException(StudentNotFoundException exception) {
+        int a = 7;
+        int b = -7;
+
         Map<String, Object> body = new LinkedHashMap<>();
+        if (a+b == 0) {
+            body = null;
+        }
         body.put("error", exception.getMessage());
         body.put("timestamp", Instant.now().toString());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
